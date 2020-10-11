@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Administrator {
+class Administrator: Codable  {
     let username: String
     let password: String
     
@@ -18,6 +18,23 @@ class Administrator {
     }
 }
 
-class Administrators : ObservableObject {
+class Administrators : ObservableObject, Codable {
+    enum CodingKeys: CodingKey {
+        case administrators
+    }
     @Published var administrators = [Administrator]()
+    
+    init() {}
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        administrators = try container.decode([Administrator].self, forKey: .administrators)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(administrators, forKey: .administrators)
+    }
 }

@@ -27,7 +27,40 @@ struct ContentView: View {
                 ShopView()
             }
         }
+        .onAppear(perform: loadData)
     }
+    
+    func loadData() {
+        guard let url = URL(string: "https://hkp-shop.herokuapp.com/login") else {
+            print("Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) {data, response, error in
+            if let data = data {
+                if let decodedCustomers = try? JSONDecoder().decode(Customers.self, from: data) {
+                    DispatchQueue.main.async {
+                        self.customerList.customers = decodedCustomers.customers
+                        print(self.customerList.customers[0].username)
+                    }
+                }
+                if let decodedAdministrators = try? JSONDecoder().decode(Administrators.self, from: data) {
+                    DispatchQueue.main.async {
+                        self.administratorList.administrators = decodedAdministrators.administrators
+                    }
+                }
+                return
+            }
+            
+            print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
+
+            
+        }.resume()
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

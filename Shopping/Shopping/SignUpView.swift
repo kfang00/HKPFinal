@@ -39,6 +39,7 @@ struct SignUpView: View {
                     Button("Customer") {
                         let customer = Customer(username: self.username, password: self.password)
                         self.customerList.customers.append(customer)
+                        //self.saveData()
                         self.screen = 0
                     }
                     .padding()
@@ -48,6 +49,7 @@ struct SignUpView: View {
                     Button("Administrator") {
                         let administrator = Administrator(username: self.username, password: self.password)
                         self.administratorList.administrators.append(administrator)
+                        //self.saveData()
                         self.screen = 0
                     }
                     .padding()
@@ -62,6 +64,41 @@ struct SignUpView: View {
         .padding()
         }
     }
+    
+//    func saveData() {
+//        let parameters = [username: customerList]
+//        guard let encoded = try? JSONEncoder().encode(customerList) else {
+//            print("Fail to encode customers")
+//            return
+//        }
+//        guard let encoded2 = try? JSONEncoder().encode(administratorList) else {
+//            print("Fail to encode administrators")
+//            return
+//        }
+//        guard let url = URL(string: "https://hkp-shop.herokuapp.com/login") else {
+//            print("Invalid URL")
+//            return
+//        }
+//        var request = URLRequest(url: url)
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpMethod = "POST"
+//        request.httpBody = encoded
+//        var request2 = URLRequest(url: url)
+//        request2.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request2.httpMethod = "POST"
+//        request2.httpBody = encoded2
+//
+//        URLSession.shared.dataTask(with: request) {data, response, error in
+//            if let response = response {
+//                print(response)
+//                return
+//            }
+//            print("Error")
+//            return
+//
+//        }.resume()
+//
+//    }
 }
 
 //struct SignUpView_Previews: PreviewProvider {
