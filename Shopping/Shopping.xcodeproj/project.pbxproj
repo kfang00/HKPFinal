@@ -13,6 +13,11 @@
 		8B4207DB2532BD8A0000FE34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B4207DA2532BD8A0000FE34 /* Assets.xcassets */; };
 		8B4207DE2532BD8A0000FE34 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B4207DD2532BD8A0000FE34 /* Preview Assets.xcassets */; };
 		8B4207E12532BD8A0000FE34 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B4207DF2532BD8A0000FE34 /* LaunchScreen.storyboard */; };
+		8B4207E92532C4E00000FE34 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207E82532C4E00000FE34 /* LoginView.swift */; };
+		8B4207EB2532C51A0000FE34 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207EA2532C51A0000FE34 /* SignUpView.swift */; };
+		8B4207ED2532C5710000FE34 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207EC2532C5710000FE34 /* Customer.swift */; };
+		8B4207EF2532DCAB0000FE34 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207EE2532DCAB0000FE34 /* ShopView.swift */; };
+		8B4207F12532DE1B0000FE34 /* Administrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207F02532DE1B0000FE34 /* Administrator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,11 @@
 		8B4207DD2532BD8A0000FE34 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8B4207E02532BD8A0000FE34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B4207E22532BD8A0000FE34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B4207E82532C4E00000FE34 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = SOURCE_ROOT; };
+		8B4207EA2532C51A0000FE34 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		8B4207EC2532C5710000FE34 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
+		8B4207EE2532DCAB0000FE34 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		8B4207F02532DE1B0000FE34 /* Administrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Administrator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,9 +66,14 @@
 		8B4207D32532BD870000FE34 /* Shopping */ = {
 			isa = PBXGroup;
 			children = (
+				8B4207E82532C4E00000FE34 /* LoginView.swift */,
+				8B4207EE2532DCAB0000FE34 /* ShopView.swift */,
+				8B4207EA2532C51A0000FE34 /* SignUpView.swift */,
 				8B4207D42532BD870000FE34 /* AppDelegate.swift */,
 				8B4207D62532BD870000FE34 /* SceneDelegate.swift */,
 				8B4207D82532BD870000FE34 /* ContentView.swift */,
+				8B4207EC2532C5710000FE34 /* Customer.swift */,
+				8B4207F02532DE1B0000FE34 /* Administrator.swift */,
 				8B4207DA2532BD8A0000FE34 /* Assets.xcassets */,
 				8B4207DF2532BD8A0000FE34 /* LaunchScreen.storyboard */,
 				8B4207E22532BD8A0000FE34 /* Info.plist */,
@@ -147,8 +162,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B4207D52532BD870000FE34 /* AppDelegate.swift in Sources */,
+				8B4207EB2532C51A0000FE34 /* SignUpView.swift in Sources */,
+				8B4207EF2532DCAB0000FE34 /* ShopView.swift in Sources */,
+				8B4207ED2532C5710000FE34 /* Customer.swift in Sources */,
 				8B4207D72532BD870000FE34 /* SceneDelegate.swift in Sources */,
+				8B4207E92532C4E00000FE34 /* LoginView.swift in Sources */,
 				8B4207D92532BD870000FE34 /* ContentView.swift in Sources */,
+				8B4207F12532DE1B0000FE34 /* Administrator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
