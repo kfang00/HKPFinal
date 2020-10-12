@@ -26,6 +26,9 @@ struct ContentView: View {
             if screen == 2{
                 ShopView()
             }
+            if screen == 3{
+                AddToShopView()
+            }
         }
         .onAppear(perform: loadData)
     }
