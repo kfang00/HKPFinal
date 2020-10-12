@@ -14,6 +14,8 @@ struct LoginView: View {
     @State private var password = ""
     @Binding var screen: Int
     
+    @ObservedObject var decoding = HttpAuth()
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -36,8 +38,22 @@ struct LoginView: View {
                     .padding()
                 HStack {
                     Button("Customer") {
-                        if self.isLoginSuccessfulCustomer() {
-                            self.screen = 2
+                        self.decoding.loadData(username: self.username, password: self.password) {result in
+                        switch result {
+                            case .success(let str):
+                                print(str)
+                                self.screen = 2
+                            case .failure(let error):
+                                switch error {
+                                case .badURL:
+                                    print("Bad URL")
+                                case .requestFailed:
+                                    print("Network problems")
+                                case .unknown:
+                                    print("Unknown error")
+                                }
+                            }
+                            
                         }
                     }
                     .padding()
@@ -45,8 +61,21 @@ struct LoginView: View {
                     .foregroundColor(Color.white)
                     
                     Button("Administrator") {
-                        if self.isLoginSuccessfulAdministrator() {
-                            self.screen = 2
+                        self.decoding.loadData(username: self.username, password: self.password) {result in
+                        switch result {
+                            case .success(let str):
+                                self.screen = 2
+                            case .failure(let error):
+                                switch error {
+                                case .badURL:
+                                    print("Bad URL")
+                                case .requestFailed:
+                                    print("Network problems")
+                                case .unknown:
+                                    print("Unknown error")
+                                }
+                            }
+                            
                         }
                     }
                     .padding()
