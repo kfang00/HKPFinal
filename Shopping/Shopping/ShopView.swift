@@ -14,7 +14,7 @@ struct ShopView: View {
     }
 }
 
-struct ShopView_Previews: PreviewProvider {
+struct ShopVieSecureFieldw_Previews: PreviewProvider {
     static var previews: some View {
         ShopView()
     }

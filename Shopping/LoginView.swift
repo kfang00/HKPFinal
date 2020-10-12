@@ -31,7 +31,7 @@ struct LoginView: View {
                 
                 Text("Enter in your password")
                     .font(.headline)
-                TextField("Password", text: $password)
+                SecureField("Password", text: $password)
                     .padding(.leading)
                 
                 Text("Sign in as")
