@@ -11,6 +11,9 @@ import SwiftUI
 struct AddToShopView: View {
     @State private var price = 0.0
     @State private var name = ""
+    @State private var inputImage: UIImage?
+    @State private var image: Image?
+    @State private var showingImagePicker = false
 
     var body: some View {
         NavigationView {
@@ -18,13 +21,24 @@ struct AddToShopView: View {
                 ZStack {
                     Color.gray
                         .frame(width: 300, height: 200)
-                    Text("Click here to add a photo")
-                        .foregroundColor(Color.white)
+                    
+                    if image != nil {
+                        image?
+                            .resizable()
+                            .scaledToFit()
+                    }
+                    else {
+                        Text("Click here to add a photo")
+                            .foregroundColor(Color.white)
+                    }
                 }
                 .padding()
+                .onTapGesture {
+                    self.showingImagePicker = true
+                }
                 
                 Form {
-                    Section(header: Text("Enter a price")) {
+                    Section(header: Text("Enter a name")) {
                         TextField("Name", text: $name)
                     }
                     Section(header: Text("Enter a price")) {
@@ -42,8 +56,18 @@ struct AddToShopView: View {
                 .padding(.bottom)
             }
             .navigationBarTitle("Add Item to Shop")
+            .sheet(isPresented: $showingImagePicker, onDismiss: addImage) {
+                ImagePicker(image: self.$inputImage)
+            }
         }
     }
+    
+    func addImage() {
+        guard let inputImage = inputImage else {return}
+        image = Image(uiImage: inputImage)
+        
+    }
+
 }
 
 struct AddToShopView_Previews: PreviewProvider {

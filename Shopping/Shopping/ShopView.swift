@@ -9,13 +9,21 @@
 import SwiftUI
 
 struct ShopView: View {
+    @Binding var screen: Int
+    
     var body: some View {
-        Text("Welcome to Shop.com!")
+        VStack {
+            Text("Welcome to Shop.com!")
+            
+            Button("Add a new item") {
+                self.screen = 3
+            }
+        }
     }
 }
 
-struct ShopVieSecureFieldw_Previews: PreviewProvider {
-    static var previews: some View {
-        ShopView()
-    }
-}
+//struct ShopVieSecureFieldw_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ShopView()
+//    }
+//}
