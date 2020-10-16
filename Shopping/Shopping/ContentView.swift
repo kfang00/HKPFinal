@@ -29,6 +29,9 @@ struct ContentView: View {
             if screen == 3{
                 AddToShopView()
             }
+            if screen == 4{
+                CartView()
+            }
         }
     }
     

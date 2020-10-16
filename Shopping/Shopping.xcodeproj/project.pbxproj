@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B10E5252539661E001AFE79 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10E5242539661E001AFE79 /* CartView.swift */; };
 		8B4207D52532BD870000FE34 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207D42532BD870000FE34 /* AppDelegate.swift */; };
 		8B4207D72532BD870000FE34 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207D62532BD870000FE34 /* SceneDelegate.swift */; };
 		8B4207D92532BD870000FE34 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4207D82532BD870000FE34 /* ContentView.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B10E5242539661E001AFE79 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		8B4207D12532BD870000FE34 /* Shopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B4207D42532BD870000FE34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B4207D62532BD870000FE34 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				8B4207D82532BD870000FE34 /* ContentView.swift */,
 				8B4207EA2532C51A0000FE34 /* SignUpView.swift */,
 				8B4207E82532C4E00000FE34 /* LoginView.swift */,
+				8B10E5242539661E001AFE79 /* CartView.swift */,
 				8B4207EE2532DCAB0000FE34 /* ShopView.swift */,
 				8B4FBC3625344BA900913488 /* AddToShopView.swift */,
 				8BCAE27F25352CDD00427B16 /* ImagePicker.swift */,
@@ -176,6 +179,7 @@
 				8B4207EB2532C51A0000FE34 /* SignUpView.swift in Sources */,
 				8B4207EF2532DCAB0000FE34 /* ShopView.swift in Sources */,
 				8B4207ED2532C5710000FE34 /* Customer.swift in Sources */,
+				8B10E5252539661E001AFE79 /* CartView.swift in Sources */,
 				8B4207D72532BD870000FE34 /* SceneDelegate.swift in Sources */,
 				8BCAE28025352CDD00427B16 /* ImagePicker.swift in Sources */,
 				8B4207E92532C4E00000FE34 /* LoginView.swift in Sources */,

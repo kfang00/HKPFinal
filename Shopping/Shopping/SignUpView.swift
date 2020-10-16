@@ -37,11 +37,12 @@ struct SignUpView: View {
                 
                 Text("Sign Up as")
                     .padding()
+                
                 HStack {
                     Button("Customer") {
-                        let customer = Customer(username: self.username, password: self.password)
-                        self.customerList.customers.append(customer)
-                        self.encoding.saveData(username: self.username, password: self.password)
+                        //let customer = Customer(username: self.username, password: self.password)
+                        //self.customerList.customers.append(customer)
+                        self.encoding.signUp(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/signup")
                         self.screen = 0
                     }
                     .padding()
@@ -49,9 +50,9 @@ struct SignUpView: View {
                     .foregroundColor(Color.white)
                     
                     Button("Administrator") {
-                        let administrator = Administrator(username: self.username, password: self.password)
-                        self.administratorList.administrators.append(administrator)
-                        self.encoding.saveData(username: self.username, password: self.password)
+                        //let administrator = Administrator(username: self.username, password: self.password)
+                        //self.administratorList.administrators.append(administrator)
+                        self.encoding.signUp(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/signup/admin")
                         self.screen = 0
                     }
                     .padding()
@@ -63,6 +64,9 @@ struct SignUpView: View {
                 Spacer()
             }
         .navigationBarTitle("Shopping")
+        .navigationBarItems(trailing: Button("Login") {
+            self.screen = 0
+        })
         .padding()
         }
     }

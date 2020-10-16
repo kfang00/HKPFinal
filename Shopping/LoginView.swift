@@ -38,7 +38,7 @@ struct LoginView: View {
                     .padding()
                 HStack {
                     Button("Customer") {
-                        self.decoding.loadData(username: self.username, password: self.password) {result in
+                        self.decoding.login(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/login") {result in
                         switch result {
                             case .success(let str):
                                 print(str)
@@ -61,7 +61,7 @@ struct LoginView: View {
                     .foregroundColor(Color.white)
                     
                     Button("Administrator") {
-                        self.decoding.loadData(username: self.username, password: self.password) {result in
+                        self.decoding.login(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/login/admin") {result in
                         switch result {
                             case .success(let str):
                                 self.screen = 2

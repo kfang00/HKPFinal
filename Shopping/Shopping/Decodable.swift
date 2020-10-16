@@ -37,20 +37,20 @@ class HttpAuth: ObservableObject  {
         case badURL, requestFailed, unknown
     }
     
-    func saveData(username: String, password: String) {
+    func signUp(username: String, password: String, link: String) {
         let parameters = ["username": username, "password": password]
         
-        guard let url = URL(string: "https://hkp-shop.herokuapp.com/signup") else {
+        guard let url = URL(string: link) else {
             print("Invalid URL")
             return
         }
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters) else {
             return
         }
         request.httpBody = httpBody
-        
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         URLSession.shared.dataTask(with: request) {data, response, error in
@@ -62,7 +62,6 @@ class HttpAuth: ObservableObject  {
                 guard let finalData = try? JSONDecoder().decode(Message.self, from: data) else {
                     return
                 }
-                //self.response = finalData
                     print(finalData)
             }
             print("Error")
@@ -72,11 +71,12 @@ class HttpAuth: ObservableObject  {
 
     }
     
-    func loadData(username: String, password: String, completion:  @escaping (Result<String, NetworkError>) -> Void) {
+    
+    func login(username: String, password: String, link: String, completion:  @escaping (Result<String, NetworkError>) -> Void) {
        completion(.failure(.badURL))
         let parameters = ["username": username, "password": password]
         
-        guard let url = URL(string: "https://hkp-shop.herokuapp.com/login") else {
+        guard let url = URL(string: link) else {
             completion(.failure(.badURL))
             return
         }
@@ -88,7 +88,7 @@ class HttpAuth: ObservableObject  {
         request.httpBody = httpBody
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        var success = false
+        //var success = false
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             if let response = response {
                 print(response)
@@ -97,7 +97,7 @@ class HttpAuth: ObservableObject  {
                 if let finalData = try? JSONDecoder().decode(Message.self, from: data) {
                     print(finalData)
                     if finalData.success != nil {
-                        success = true
+                        //success = true
                         completion(.success("success"))
                     }
                 }
@@ -105,11 +105,12 @@ class HttpAuth: ObservableObject  {
             else if error != nil {
                 completion(.failure(.requestFailed))
             }
-            print(success)
+            //print(success)
             return
 
         }
         task.resume()
         return
     }
+    
 }
