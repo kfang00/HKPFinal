@@ -9,37 +9,42 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var customerList = Customers()
-    @ObservedObject var administratorList = Administrators()
-    @State private var chosenUser = Customer?.self
+    @ObservedObject var customer = Customer()
+    @ObservedObject var admin = Administrator()
+    //@ObservedObject var customerList = Customers()
+    //@ObservedObject var administratorList = Administrators()
+    //@State private var chosenUser = Customer?.self
+    
+    @State private var isUser = false
     
     @State private var screen = 0
     
     var body: some View {
         Group {
             if screen == 0 {
-                LoginView(customerList: customerList, administratorList: administratorList, screen: $screen)
+                LoginView(screen: $screen)
             }
             if screen == 1{
-                SignUpView(customerList: customerList, administratorList: administratorList, screen: $screen)
+                SignUpView(screen: $screen)
             }
             if screen == 2{
                 ShopView(screen: $screen)
             }
             if screen == 3{
-                AddToShopView()
+                AddToShopView(screen: $screen)
             }
             if screen == 4{
-                CartView()
+                CartView(screen: $screen)
             }
         }
+        .environmentObject(admin)
     }
     
     
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

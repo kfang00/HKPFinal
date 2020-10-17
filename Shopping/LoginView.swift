@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
-    @ObservedObject var customerList: Customers
-    @ObservedObject var administratorList: Administrators
+    @EnvironmentObject var customer: Customer
+    @EnvironmentObject var admin: Administrator
+    //@ObservedObject var customerList: Customers
+    //@ObservedObject var administratorList: Administrators
     @State private var username = ""
     @State private var password = ""
     @Binding var screen: Int
@@ -41,6 +43,7 @@ struct LoginView: View {
                         self.decoding.login(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/login") {result in
                         switch result {
                             case .success(let str):
+                                self.customer.token = str
                                 print(str)
                                 self.screen = 2
                             case .failure(let error):
@@ -64,6 +67,7 @@ struct LoginView: View {
                         self.decoding.login(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/login/admin") {result in
                         switch result {
                             case .success(let str):
+                                self.admin.token = str
                                 self.screen = 2
                             case .failure(let error):
                                 switch error {
@@ -93,23 +97,23 @@ struct LoginView: View {
         }
     }
     
-    func isLoginSuccessfulCustomer() -> Bool {
-        if let match = self.customerList.customers.firstIndex(where: {$0.username == self.username}) {
-            if self.customerList.customers[match].password == self.password {
-                return true
-            }
-        }
-        return false
-    }
-    
-    func isLoginSuccessfulAdministrator() -> Bool {
-        if let match = self.administratorList.administrators.firstIndex(where: {$0.username == self.username}) {
-            if self.administratorList.administrators[match].password == self.password {
-                return true
-            }
-        }
-        return false
-    }
+//    func isLoginSuccessfulCustomer() -> Bool {
+//        if let match = self.customerList.customers.firstIndex(where: {$0.username == self.username}) {
+//            if self.customerList.customers[match].password == self.password {
+//                return true
+//            }
+//        }
+//        return false
+//    }
+//
+//    func isLoginSuccessfulAdministrator() -> Bool {
+//        if let match = self.administratorList.administrators.firstIndex(where: {$0.username == self.username}) {
+//            if self.administratorList.administrators[match].password == self.password {
+//                return true
+//            }
+//        }
+//        return false
+//    }
 }
 
 //struct LoginView_Previews: PreviewProvider {

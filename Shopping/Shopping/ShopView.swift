@@ -12,12 +12,20 @@ struct ShopView: View {
     @Binding var screen: Int
     
     var body: some View {
-        VStack {
-            Text("Welcome to Shop.com!")
-            
-            Button("Add a new item") {
-                self.screen = 3
+        NavigationView{
+            VStack{
+                Text("Welcome to Shop.com!")
+                    .font(.title)
+                
+                Button("Add a new item") {
+                    self.screen = 3
+                }
+                Spacer()
             }
+            .navigationBarTitle("Shop")
+            .navigationBarItems(trailing: Button ("Cart") {
+                self.screen = 4
+            })
         }
     }
 }

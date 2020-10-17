@@ -9,22 +9,27 @@
 import SwiftUI
 
 struct CartView: View {
+    @Binding var screen: Int
+    
     var body: some View {
         NavigationView {
             VStack {
                 Text("Your Items")
+                    .font(.title)
+                    .bold()
+                Spacer()
             }
             .navigationBarTitle("Cart")
             .navigationBarItems(trailing:
                 Button("Back to Shop") {
-                //switch to shop view
+                    self.screen = 2
             })
         }
     }
 }
 
-struct CartView_Previews: PreviewProvider {
-    static var previews: some View {
-        CartView()
-    }
-}
+//struct CartView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CartView()
+//    }
+//}

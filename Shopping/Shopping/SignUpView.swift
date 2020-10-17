@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @ObservedObject var customerList: Customers
-    @ObservedObject var administratorList: Administrators
+    //@ObservedObject var customerList: Customers
+    //@ObservedObject var administratorList: Administrators
     @State private var username = ""
     @State private var password = ""
     @Binding var screen: Int

@@ -8,34 +8,12 @@
 
 import Foundation
 
-class Customer: Codable {
-    let username: String
-    let password: String
-    
-    init(username: String, password: String) {
-        self.username = username
-        self.password = password
+class Customer: ObservableObject {
+    @Published var token: String = "default" {
+        willSet {
+            objectWillChange.send()
+        }
     }
+
 }
 
-class Customers: ObservableObject, Codable {
-    enum CodingKeys: CodingKey {
-        case customers
-    }
-    @Published var customers = [Customer]()
-    
-    init() {}
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        customers = try container.decode([Customer].self, forKey: .customers)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(customers, forKey: .customers)
-    }
-    
-}

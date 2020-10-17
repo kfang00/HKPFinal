@@ -9,11 +9,18 @@
 import SwiftUI
 
 struct AddToShopView: View {
+    @EnvironmentObject var customer: Customer
+    @EnvironmentObject var admin: Administrator
     @State private var price = 0.0
     @State private var name = ""
+    @State private var category = "Default"
     @State private var inputImage: UIImage?
     @State private var image: Image?
+    @State private var uiImage: UIImage?
     @State private var showingImagePicker = false
+    
+    @Binding var screen: Int
+    @ObservedObject var decoding = HttpAuth()
 
     var body: some View {
         NavigationView {
@@ -47,11 +54,28 @@ struct AddToShopView: View {
                     
                     Text("Price: $\(price, specifier: "%.2f")")
                     
-                    
                 }
                 
                 Button("Add") {
-                    
+                    //print(self.admin.token)
+                    self.decoding.addItem(token: self.admin.token, price: Float(self.price), description: self.name, picture: self.uiImage!, category: self.category, link: "https://hkp-shop.herokuapp.com/vendor/items/create") {result in
+                        switch result {
+                            case .success(let str):
+                                print(str)
+                                self.screen = 2
+                            case .failure(let error):
+                                switch error {
+                                case .badURL:
+                                    print("Bad URL")
+                                case .requestFailed:
+                                    print("Network problems")
+                                case .unknown:
+                                    print("Unknown error")
+                                }
+                            }
+                        
+                    }
+                    self.screen = 2
                 }
                 .padding(.bottom)
             }
@@ -65,13 +89,14 @@ struct AddToShopView: View {
     func addImage() {
         guard let inputImage = inputImage else {return}
         image = Image(uiImage: inputImage)
+        uiImage = inputImage
         
     }
 
 }
 
-struct AddToShopView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddToShopView()
-    }
-}
+//struct AddToShopView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddToShopView()
+//    }
+//}
