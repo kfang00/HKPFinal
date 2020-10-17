@@ -43,7 +43,9 @@ struct LoginView: View {
                         self.decoding.login(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/login") {result in
                         switch result {
                             case .success(let str):
-                                self.customer.token = str
+                                DispatchQueue.main.async {
+                                    self.customer.token = str
+                                }
                                 print(str)
                                 self.screen = 2
                             case .failure(let error):
@@ -67,8 +69,10 @@ struct LoginView: View {
                         self.decoding.login(username: self.username, password: self.password, link: "https://hkp-shop.herokuapp.com/login/admin") {result in
                         switch result {
                             case .success(let str):
-                                self.admin.token = str
-                                self.screen = 2
+                                DispatchQueue.main.async {
+                                    self.admin.token = str
+                                }
+                                self.screen = 5
                             case .failure(let error):
                                 switch error {
                                 case .badURL:

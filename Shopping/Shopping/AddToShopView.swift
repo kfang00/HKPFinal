@@ -14,6 +14,7 @@ struct AddToShopView: View {
     @State private var price = 0.0
     @State private var name = ""
     @State private var category = "Default"
+    @State private var description = ""
     @State private var inputImage: UIImage?
     @State private var image: Image?
     @State private var uiImage: UIImage?
@@ -48,6 +49,9 @@ struct AddToShopView: View {
                     Section(header: Text("Enter a name")) {
                         TextField("Name", text: $name)
                     }
+                    Section(header: Text("Enter a description")) {
+                        TextField("Name", text: $description)
+                    }
                     Section(header: Text("Enter a price")) {
                         Slider(value: $price, in: 0 ... 200)
                     }
@@ -58,7 +62,9 @@ struct AddToShopView: View {
                 
                 Button("Add") {
                     //print(self.admin.token)
-                    self.decoding.addItem(token: self.admin.token, price: Float(self.price), description: self.name, picture: self.uiImage!, category: self.category, link: "https://hkp-shop.herokuapp.com/vendor/items/create") {result in
+                    let newPrice = Double(String(format: "%.2f", self.price))!
+                    print(newPrice)
+                    self.decoding.addItem(token: self.admin.token, price: Float(newPrice), description: self.description, picture: self.uiImage!, category: self.category, name: self.name, link: "https://hkp-shop.herokuapp.com/vendor/items/create") {result in
                         switch result {
                             case .success(let str):
                                 print(str)

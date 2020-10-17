@@ -36,8 +36,12 @@ struct ContentView: View {
             if screen == 4{
                 CartView(screen: $screen)
             }
+            if screen == 5{
+                ShopAdminView(screen: $screen)
+            }
         }
         .environmentObject(admin)
+        .environmentObject(customer)
     }
     
     

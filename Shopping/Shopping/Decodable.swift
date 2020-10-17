@@ -31,12 +31,29 @@ struct AddMessage: Decodable {
 }
 
 struct Item: Decodable {
-    var token: String
-    var price: Float
-    var description: String
-    var picture: String
     var category: String
+    var description: String
+    var name: String
+    var picture: Picture
+    var price: Float
+    var token: String
     
+    
+    init(token: String, price: Float, description: String, picture: Picture, category: String, name: String) {
+        self.token = token
+        self.price = price
+        self.description = description
+        self.picture = picture
+        self.category = category
+        self.name = name
+        
+    }
+    
+}
+
+struct Picture: Decodable {
+    var data: String
+
 }
 
 struct Success: Decodable {
@@ -132,10 +149,10 @@ class HttpAuth: ObservableObject  {
         return
     }
     
-    func addItem(token: String, price: Float, description: String, picture: UIImage, category: String, link: String, completion:  @escaping (Result<String, NetworkError>) -> Void) {
+    func addItem(token: String, price: Float, description: String, picture: UIImage, category: String, name: String, link: String, completion:  @escaping (Result<String, NetworkError>) -> Void) {
         let jpegData = picture.jpegData(compressionQuality: 0.8)?.base64EncodedString() ?? ""
-        
-       let parameters = ["token": token, "price": price, "description": description, "picture": jpegData, "category": category] as [String : Any]
+        //print(jpegData)
+        let parameters = ["category": category, "description": description, "name": name, "picture": jpegData, "price": price, "token": token] as [String : Any]
         
         guard let url = URL(string: link) else {
             completion(.failure(.badURL))
@@ -153,6 +170,36 @@ class HttpAuth: ObservableObject  {
             if let response = response {
                 print(response)
             }
+            if let data = data {
+                //print("done")
+                if let finalData = try? JSONDecoder().decode(Items.self, from: data) {
+                    print(finalData)
+                    completion(.success("success"))
+                } else {
+                    print("error occurred")
+                }
+            }
+            else if error != nil {
+                completion(.failure(.requestFailed))
+            }
+            return
+
+        }
+        task.resume()
+        return
+    }
+    
+    func getItemList(link: String, completion:  @escaping (Result<String, NetworkError>) -> Void) {
+        
+        guard let url = URL(string: link) else {
+            completion(.failure(.badURL))
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
             if let data = data {
                 //print("done")
                 if let finalData = try? JSONDecoder().decode(AddMessage.self, from: data) {
@@ -173,5 +220,4 @@ class HttpAuth: ObservableObject  {
         task.resume()
         return
     }
-    
 }
