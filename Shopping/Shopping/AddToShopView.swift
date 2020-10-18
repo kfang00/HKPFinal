@@ -22,6 +22,7 @@ struct AddToShopView: View {
     
     @Binding var screen: Int
     @ObservedObject var decoding = HttpAuth()
+    @EnvironmentObject var items: ItemsList
 
     var body: some View {
         NavigationView {
@@ -68,6 +69,7 @@ struct AddToShopView: View {
                         switch result {
                             case .success(let str):
                                 print(str)
+                                self.loadItems()
                                 self.screen = 5
                             case .failure(let error):
                                 switch error {
@@ -81,7 +83,8 @@ struct AddToShopView: View {
                             }
                         
                     }
-                    self.screen = 2
+                    self.loadItems()
+                    self.screen = 5
                 }
                 .padding(.bottom)
             }
@@ -97,6 +100,28 @@ struct AddToShopView: View {
         image = Image(uiImage: inputImage)
         uiImage = inputImage
         
+    }
+    
+    func loadItems() {
+        self.decoding.getItemList(token: admin.token, link: "https://hkp-shop.herokuapp.com/vendor/items") {result in
+        switch result {
+            case .success(let str):
+                DispatchQueue.main.async {
+                    //self.items = ItemsList(items: str)
+                    self.items.replace(str)
+                }
+                //print(str)
+            case .failure(let error):
+                switch error {
+                case .badURL:
+                    print("Bad URL")
+                case .requestFailed:
+                    print("Network problems")
+                case .unknown:
+                    print("Unknown error")
+                }
+            }
+        }
     }
 
 }

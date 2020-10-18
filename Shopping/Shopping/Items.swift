@@ -15,4 +15,23 @@ class ItemsList: ObservableObject {
         }
     }
     
+    func replace(_ items: [Item]) {
+        objectWillChange.send()
+        self.items = items
+
+    }
+}
+
+class StoreList: ObservableObject {
+    @Published var items: [StoreItem] = [StoreItem]() {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    
+    func replace(_ items: [StoreItem]) {
+        objectWillChange.send()
+        self.items = items
+
+    }
 }

@@ -13,6 +13,9 @@ struct ContentView: View {
     @ObservedObject var admin = Administrator()
     
     @ObservedObject var items = ItemsList()
+    @ObservedObject var itemsStore = StoreList()
+    @ObservedObject var cart = StoreList()
+    
     //@ObservedObject var customerList = Customers()
     //@ObservedObject var administratorList = Administrators()
     //@State private var chosenUser = Customer?.self
@@ -20,6 +23,7 @@ struct ContentView: View {
     @State private var isUser = false
     
     @State private var screen = 0
+    @ObservedObject var decoding = HttpAuth()
     
     var body: some View {
         Group {
@@ -45,9 +49,10 @@ struct ContentView: View {
         .environmentObject(admin)
         .environmentObject(customer)
         .environmentObject(items)
+        .environmentObject(itemsStore)
+        .environmentObject(cart)
         //.onAppear(perform: loadItems)
     }
-    
     
 }
 

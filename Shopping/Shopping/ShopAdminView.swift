@@ -17,27 +17,34 @@ struct ShopAdminView: View {
     var body: some View {
         NavigationView{
             VStack{
-                Text("Welcome to Shop.com!")
-                    .font(.title)
                 
                 List(items.items) { item in
                     HStack{
                         Image(uiImage: UIImage(data: Data(base64Encoded: item.picture.data)!)!)
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
                             .frame(width: 110, height: 110)
+                            .cornerRadius(10)
+                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: 2))
+                            .shadow(radius: 5)
+                            //.padding(.horizontal)
                         VStack (alignment: .leading){
                             Text(item.name)
                                 .font(.headline)
                             Text(item.description)
                         }
+                            .padding(.horizontal)
+                        Spacer()
+                        Text("$\(item.price, specifier: "%.2f")")
+                        
                     }
                     
                 }
                 
                 Spacer()
             }
-            .navigationBarTitle("Shop")
+            .navigationBarTitle("Your Items")
             .navigationBarItems(trailing: Button("Add a new item") {
                 self.screen = 3
             })

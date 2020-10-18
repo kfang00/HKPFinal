@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CartView: View {
     @Binding var screen: Int
+    @EnvironmentObject var cart: StoreList
     
     var body: some View {
         NavigationView {

@@ -10,6 +10,28 @@ import Foundation
 import SwiftUI
 import Combine
 
+struct StoreMessage: Decodable {
+    var success: Store
+}
+
+struct Store:Decodable {
+    var items: [StoreItem]
+}
+
+struct StoreItem: Decodable , Identifiable {
+    let id = UUID()
+    var category: String
+    var description: String
+    var name: String
+    var picture: Picture
+    var price: Float
+    var seller: Seller
+}
+
+struct Seller: Decodable {
+    var username: String
+}
+
 struct AddMessage: Decodable {
     var success: Items?
     //var error : String?
@@ -118,7 +140,7 @@ class HttpAuth: ObservableObject  {
     }
     
     
-    func login(username: String, password: String, link: String, completion:  @escaping (Result<String, NetworkError>) -> Void) {
+    func login(username: String, password: String, link: String, completion:  @escaping (Result<Message, NetworkError>) -> Void) {
         let parameters = ["username": username, "password": password]
         
         guard let url = URL(string: link) else {
@@ -143,7 +165,7 @@ class HttpAuth: ObservableObject  {
                     print(finalData)
                     if finalData.success != nil {
                         //success = true
-                        completion(.success(finalData.success!.token))
+                        completion(.success(finalData))
                     }
                 }
             }
@@ -201,7 +223,7 @@ class HttpAuth: ObservableObject  {
     }
     
     func getItemList(token: String, link: String, completion:  @escaping (Result<[Item], NetworkError>) -> Void) {
-        let parameters = ["token": token]
+        //let parameters = ["token": token]
         
         var components = URLComponents(string: link)!
         components.queryItems = [URLQueryItem(name: "token", value: token)]
@@ -219,6 +241,40 @@ class HttpAuth: ObservableObject  {
                 if let finalData = try? JSONDecoder().decode(AddMessage.self, from: data) {
                    //print(finalData)
                    completion(.success(finalData.success!.items))
+                } else {
+                    print("error occurred")
+                }
+            }
+            else if error != nil {
+                completion(.failure(.requestFailed))
+            }
+            return
+
+        }
+        task.resume()
+        return
+    }
+    
+    func getStoreList(link: String, completion:  @escaping (Result<[StoreItem], NetworkError>) -> Void) {
+        guard let url = URL(string: link) else {
+            completion(.failure(.badURL))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            if let response = response {
+                print(response)
+            }
+            if let data = data {
+                //print(data)
+                //try! JSONDecoder().decode(Store.self, from: data)
+                if let finalData = try? JSONDecoder().decode(StoreMessage.self, from: data) {
+                   //print(finalData)
+                    completion(.success(finalData.success.items))
                 } else {
                     print("error occurred")
                 }

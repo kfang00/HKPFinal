@@ -14,6 +14,8 @@ struct LoginView: View {
     //@ObservedObject var administratorList: Administrators
     @State private var username = ""
     @State private var password = ""
+    @State private var showingError = false
+    @State private var alertMessage = ""
     @Binding var screen: Int
     
     @ObservedObject var decoding = HttpAuth()
@@ -44,9 +46,13 @@ struct LoginView: View {
                         switch result {
                             case .success(let str):
                                 DispatchQueue.main.async {
-                                    self.customer.token = str
+                                    self.customer.token = str.success!.token
                                 }
-                                print(str)
+                                if str.error != nil {
+                                    self.showingError = true
+                                    self.alertMessage = str.error ?? ""
+                                }
+                                //print(str)
                                 self.screen = 2
                             case .failure(let error):
                                 switch error {
@@ -70,7 +76,7 @@ struct LoginView: View {
                         switch result {
                             case .success(let str):
                                 DispatchQueue.main.async {
-                                    self.admin.token = str
+                                    self.admin.token = str.success!.token
                                 }
                                 self.screen = 5
                             case .failure(let error):
@@ -97,6 +103,9 @@ struct LoginView: View {
             .navigationBarItems(trailing: Button("Sign Up") {
                 self.screen = 1
             })
+                .alert(isPresented: $showingError) {
+                    Alert(title: Text("Error"), message: Text(self.alertMessage), dismissButton: .default(Text("Ok")))
+            }
         .padding()
         }
     }
