@@ -10,33 +10,32 @@ import Foundation
 import SwiftUI
 import Combine
 
-struct Message: Decodable {
-    var success: Success?
-    var error : String?
-    
-    init(success: Success, error: String) {
-        self.success = success
-        self.error = error
-    }
-}
-
 struct AddMessage: Decodable {
-    var success: Item?
-    var error : String?
+    var success: Items?
+    //var error : String?
     
-    init(success: Item, error: String) {
+    init(success: Items) {
         self.success = success
-        self.error = error
+        //self.error = error
     }
 }
 
-struct Item: Decodable {
+struct Items: Decodable {
+    var items: [Item]
+    
+    init(items: [Item]) {
+        self.items = items
+    }
+}
+
+struct Item: Decodable, Identifiable {
+    let id = UUID()
     var category: String
     var description: String
     var name: String
     var picture: Picture
     var price: Float
-    var token: String
+    var token: String?
     
     
     init(token: String, price: Float, description: String, picture: Picture, category: String, name: String) {
@@ -54,6 +53,16 @@ struct Item: Decodable {
 struct Picture: Decodable {
     var data: String
 
+}
+
+struct Message: Decodable {
+    var success: Success?
+    var error : String?
+    
+    init(success: Success, error: String) {
+        self.success = success
+        self.error = error
+    }
 }
 
 struct Success: Decodable {
@@ -172,9 +181,11 @@ class HttpAuth: ObservableObject  {
             }
             if let data = data {
                 //print("done")
-                if let finalData = try? JSONDecoder().decode(Items.self, from: data) {
-                    print(finalData)
-                    completion(.success("success"))
+                if let finalData = try? JSONDecoder().decode(AddMessage.self, from: data) {
+                   print(finalData)
+//                    if finalData.success != nil {
+//                        completion(.success("success"))
+//                    }
                 } else {
                     print("error occurred")
                 }
@@ -189,24 +200,25 @@ class HttpAuth: ObservableObject  {
         return
     }
     
-    func getItemList(link: String, completion:  @escaping (Result<String, NetworkError>) -> Void) {
+    func getItemList(token: String, link: String, completion:  @escaping (Result<[Item], NetworkError>) -> Void) {
+        let parameters = ["token": token]
         
-        guard let url = URL(string: link) else {
-            completion(.failure(.badURL))
-            return
-        }
-        var request = URLRequest(url: url)
+        var components = URLComponents(string: link)!
+        components.queryItems = [URLQueryItem(name: "token", value: token)]
+            
+        var request = URLRequest(url: components.url!)
         request.httpMethod = "GET"
-        //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            if let response = response {
+                print(response)
+            }
             if let data = data {
-                //print("done")
+                //print(data)
                 if let finalData = try? JSONDecoder().decode(AddMessage.self, from: data) {
-                    print(finalData)
-//                    if finalData.success != nil {
-//                        completion(.success("success"))
-//                    }
+                   //print(finalData)
+                   completion(.success(finalData.success!.items))
                 } else {
                     print("error occurred")
                 }

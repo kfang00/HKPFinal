@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ShopView: View {
     @Binding var screen: Int
+    @EnvironmentObject var items: ItemsList
+    
     
     var body: some View {
         NavigationView{

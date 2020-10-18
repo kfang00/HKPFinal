@@ -68,7 +68,7 @@ struct AddToShopView: View {
                         switch result {
                             case .success(let str):
                                 print(str)
-                                self.screen = 2
+                                self.screen = 5
                             case .failure(let error):
                                 switch error {
                                 case .badURL:

@@ -11,6 +11,8 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var customer = Customer()
     @ObservedObject var admin = Administrator()
+    
+    @ObservedObject var items = ItemsList()
     //@ObservedObject var customerList = Customers()
     //@ObservedObject var administratorList = Administrators()
     //@State private var chosenUser = Customer?.self
@@ -42,6 +44,8 @@ struct ContentView: View {
         }
         .environmentObject(admin)
         .environmentObject(customer)
+        .environmentObject(items)
+        //.onAppear(perform: loadItems)
     }
     
     

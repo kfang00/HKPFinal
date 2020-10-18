@@ -8,6 +8,11 @@
 
 import Foundation
 
-struct Items: Decodable{
-    var items: [Item]
+class ItemsList: ObservableObject {
+    @Published var items: [Item] = [Item]() {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    
 }
