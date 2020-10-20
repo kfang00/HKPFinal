@@ -11,10 +11,11 @@ import SwiftUI
 struct CartView: View {
     @Binding var screen: Int
     @EnvironmentObject var cart: Cart
+    @State private var total = Float(0.0)
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack (spacing: 5){
                 Text("Your Items")
                     .font(.title)
                     .bold()
@@ -45,6 +46,10 @@ struct CartView: View {
                     
                 }
                 Spacer()
+                Text("Total: $\(calculateTotal(), specifier: "%.2f")")
+                Button("Checkout") {
+                    
+                }
             }
             .navigationBarTitle("Cart")
             .navigationBarItems(trailing:
@@ -56,6 +61,14 @@ struct CartView: View {
     
     func removeItem(at offsets: IndexSet) {
         cart.items.remove(atOffsets: offsets)
+    }
+    
+    func calculateTotal() -> Float{
+        var total = Float(0.0)
+        for i in cart.items {
+            total += i.price
+        }
+        return total
     }
 }
 

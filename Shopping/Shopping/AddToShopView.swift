@@ -37,7 +37,7 @@ struct AddToShopView: View {
                         image?
                             .resizable()
                             .scaledToFit()
-                            //.frame(width: 300, height: 200)
+                            .frame(width: 300, height: 200)
                     }
                     else {
                         Text("Click here to add a photo")
@@ -90,7 +90,6 @@ struct AddToShopView: View {
                         self.screen = 5
                     } else {
                         self.alertShowing = true
-                        print("no pic selected")
                     }
                     
                 }
@@ -117,6 +116,7 @@ struct AddToShopView: View {
     }
     
     func loadItems() {
+        print("function called")
         self.decoding.getItemList(token: admin.token, link: "https://hkp-shop.herokuapp.com/vendor/items") {result in
         switch result {
             case .success(let str):

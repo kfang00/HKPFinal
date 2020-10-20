@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct ItemView: View {
+    @Binding var screen: Int
     @EnvironmentObject var cart: Cart
     @EnvironmentObject var itemsStore: StoreList
     var index: Int
@@ -38,7 +39,8 @@ struct ItemView: View {
                 .foregroundColor(.white)
                 .clipShape(Capsule())
                 .onTapGesture {
-                    self.cart.add(item: self.itemsStore.items[self.index])   
+                    self.cart.add(item: self.itemsStore.items[self.index])
+                    self.screen = 4
                 }
 
                 Spacer()
@@ -64,9 +66,11 @@ struct ShopView: View {
                 List{
                     ForEach(Array(stride(from: 0, to: itemsStore.items.count, by: 2)), id:\.self) { index in
                         HStack {
-                            ItemView(index: index)
                             Spacer()
-                            ItemView(index: index + 1)
+                            ItemView(screen: self.$screen, index: index)
+                            Spacer()
+                            ItemView(screen: self.$screen, index: index + 1)
+                            Spacer()
                         }
                             
                         
