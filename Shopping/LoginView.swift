@@ -46,14 +46,15 @@ struct LoginView: View {
                         switch result {
                             case .success(let str):
                                 DispatchQueue.main.async {
-                                    self.customer.token = str.success!.token
+                                    if str.success != nil {
+                                        self.customer.token = str.success!.token
+                                        self.screen = 2
+                                    }
+                                    if str.error != nil {
+                                        self.showingError = true
+                                        self.alertMessage = str.error ?? ""
+                                    }
                                 }
-                                if str.error != nil {
-                                    self.showingError = true
-                                    self.alertMessage = str.error ?? ""
-                                }
-                                //print(str)
-                                self.screen = 2
                             case .failure(let error):
                                 switch error {
                                 case .badURL:
@@ -76,9 +77,16 @@ struct LoginView: View {
                         switch result {
                             case .success(let str):
                                 DispatchQueue.main.async {
-                                    self.admin.token = str.success!.token
+                                    if str.success != nil {
+                                        self.customer.token = str.success!.token
+                                        self.screen = 5
+                                    }
+                                    if str.error != nil {
+                                        self.showingError = true
+                                        self.alertMessage = str.error ?? ""
+                                    }
                                 }
-                                self.screen = 5
+                                
                             case .failure(let error):
                                 switch error {
                                 case .badURL:
@@ -104,7 +112,7 @@ struct LoginView: View {
                 self.screen = 1
             })
                 .alert(isPresented: $showingError) {
-                    Alert(title: Text("Error"), message: Text(self.alertMessage), dismissButton: .default(Text("Ok")))
+                    Alert(title: Text("Error"), message: Text(self.alertMessage), dismissButton: .default(Text("OK")))
             }
         .padding()
         }

@@ -163,10 +163,7 @@ class HttpAuth: ObservableObject  {
             if let data = data {
                 if let finalData = try? JSONDecoder().decode(Message.self, from: data) {
                     print(finalData)
-                    if finalData.success != nil {
-                        //success = true
-                        completion(.success(finalData))
-                    }
+                    completion(.success(finalData))
                 }
             }
             else if error != nil {
