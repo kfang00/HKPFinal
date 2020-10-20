@@ -23,7 +23,7 @@ struct ShopAdminView: View {
                         Image(uiImage: UIImage(data: Data(base64Encoded: item.picture.data)!)!)
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 110, height: 110)
+                            .frame(width: 120, height: 105)
                             .cornerRadius(10)
                             .overlay(RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.blue, lineWidth: 2))

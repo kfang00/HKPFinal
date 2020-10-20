@@ -8,6 +8,44 @@
 
 import SwiftUI
 
+struct ItemView: View {
+    @EnvironmentObject var itemsStore: StoreList
+    var index: Int
+    
+     var body: some View {
+        VStack (spacing: 5){
+            if index != self.itemsStore.items.count {
+                Image(uiImage: UIImage(data: Data(base64Encoded: self.itemsStore.items[index].picture.data)!)!)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 120, height: 105)
+                    .cornerRadius(10)
+                    .overlay(RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.blue, lineWidth: 2))
+                    .shadow(radius: 5)
+                    //.padding(.horizontal)
+                Text(self.itemsStore.items[index].name)
+                    .font(.headline)
+                Text("Description: \(self.itemsStore.items[index].description)")
+                Text("Seller: \(self.itemsStore.items[index].seller.username)")
+                    .font(.subheadline)
+                Button("Add To Cart") {
+                
+                }
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .clipShape(Capsule())
+
+                Spacer()
+                Text("$\(self.itemsStore.items[index].price, specifier: "%.2f")")
+            }
+        }
+        .padding(.bottom)
+    }
+
+}
+
 struct ShopView: View {
     @Binding var screen: Int
     @EnvironmentObject var itemsStore: StoreList
@@ -19,36 +57,16 @@ struct ShopView: View {
             VStack{
                 Text("Welcome to Shop.com!")
                     .font(.title)
-                
-                List(itemsStore.items) { item in
-                    VStack(spacing: 5){
-                        Image(uiImage: UIImage(data: Data(base64Encoded: item.picture.data)!)!)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 120, height: 105)
-                            .cornerRadius(10)
-                            .overlay(RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.blue, lineWidth: 2))
-                            .shadow(radius: 5)
-                            //.padding(.horizontal)
-                        Text(item.name)
-                            .font(.headline)
-                        Text("Description: \(item.description)")
-                        Text("Seller: \(item.seller.username)")
-                            .font(.subheadline)
-                        Button("Add To Cart") {
-                        
+                List{
+                    ForEach(Array(stride(from: 0, to: itemsStore.items.count, by: 2)), id:\.self) { index in
+                        HStack {
+                            ItemView(index: index)
+                            Spacer()
+                            ItemView(index: index + 1)
                         }
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .clipShape(Capsule())
-
-                        Spacer()
-                        Text("$\(item.price, specifier: "%.2f")")
+                            
                         
                     }
-                    
                 }
             }
             .navigationBarTitle("Shop")
@@ -58,6 +76,15 @@ struct ShopView: View {
         }
         .onAppear(perform: loadItems)
     }
+    
+//    func groupInto2() {
+//        var newItemList: [[StoreItem]] = []
+//        var i = 0
+//        while i < itemsStore.items.count - 1{
+//            var pair = itemsStore.items[i ..< (i + 2)]
+//            newItemList.append(pair)
+//        }
+//    }
     
     func loadItems() {
         self.decoding.getStoreList(link: "https://hkp-shop.herokuapp.com/store") {result in
