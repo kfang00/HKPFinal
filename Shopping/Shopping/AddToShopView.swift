@@ -23,6 +23,8 @@ struct AddToShopView: View {
     @Binding var screen: Int
     @ObservedObject var decoding = HttpAuth()
     @EnvironmentObject var items: ItemsList
+    
+    @State private var alertShowing = false
 
     var body: some View {
         NavigationView {
@@ -35,6 +37,7 @@ struct AddToShopView: View {
                         image?
                             .resizable()
                             .scaledToFit()
+                            //.frame(width: 300, height: 200)
                     }
                     else {
                         Text("Click here to add a photo")
@@ -64,33 +67,44 @@ struct AddToShopView: View {
                 Button("Add") {
                     //print(self.admin.token)
                     let newPrice = Double(String(format: "%.2f", self.price))!
-                    print(newPrice)
-                    self.decoding.addItem(token: self.admin.token, price: Float(newPrice), description: self.description, picture: self.uiImage!, category: self.category, name: self.name, link: "https://hkp-shop.herokuapp.com/vendor/items/create") {result in
-                        switch result {
-                            case .success(let str):
-                                print(str)
-                                self.loadItems()
-                                self.screen = 5
-                            case .failure(let error):
-                                switch error {
-                                case .badURL:
-                                    print("Bad URL")
-                                case .requestFailed:
-                                    print("Network problems")
-                                case .unknown:
-                                    print("Unknown error")
+                    if self.uiImage != nil {
+                        self.decoding.addItem(token: self.admin.token, price: Float(newPrice), description: self.description, picture: self.uiImage!, category: self.category, name: self.name, link: "https://hkp-shop.herokuapp.com/vendor/items/create") {result in
+                            switch result {
+                                case .success(let str):
+                                    print(str)
+                                    self.loadItems()
+                                    self.screen = 5
+                                case .failure(let error):
+                                    switch error {
+                                    case .badURL:
+                                        print("Bad URL")
+                                    case .requestFailed:
+                                        print("Network problems")
+                                    case .unknown:
+                                        print("Unknown error")
+                                    }
                                 }
-                            }
-                        
+                            
+                        }
+                        self.loadItems()
+                        self.screen = 5
+                    } else {
+                        self.alertShowing = true
+                        print("no pic selected")
                     }
-                    self.loadItems()
-                    self.screen = 5
+                    
                 }
                 .padding(.bottom)
             }
             .navigationBarTitle("Add Item to Shop")
+            .navigationBarItems(trailing: Button("Cancel") {
+                self.screen = 5
+            })
             .sheet(isPresented: $showingImagePicker, onDismiss: addImage) {
                 ImagePicker(image: self.$inputImage)
+            }
+            .alert(isPresented: $alertShowing) {
+                Alert(title: Text("Error"), message: Text("No picture selected"), dismissButton: .default(Text("OK")))
             }
         }
     }
