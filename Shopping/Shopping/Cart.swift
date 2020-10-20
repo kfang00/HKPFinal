@@ -15,4 +15,8 @@ class Cart: ObservableObject {
             objectWillChange.send()
         }
     }
+    
+    func add(item: StoreItem) {
+        items.append(item)
+    }
 }

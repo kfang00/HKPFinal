@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CartView: View {
     @Binding var screen: Int
-    @EnvironmentObject var cart: StoreList
+    @EnvironmentObject var cart: Cart
     
     var body: some View {
         NavigationView {
@@ -18,6 +18,32 @@ struct CartView: View {
                 Text("Your Items")
                     .font(.title)
                     .bold()
+                List{
+                    ForEach(cart.items) { item in
+                        HStack{
+                            Image(uiImage: UIImage(data: Data(base64Encoded: item.picture.data)!)!)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 120, height: 105)
+                                .cornerRadius(10)
+                                .overlay(RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.blue, lineWidth: 2))
+                                .shadow(radius: 5)
+                                //.padding(.horizontal)
+                            VStack (alignment: .leading){
+                                Text(item.name)
+                                    .font(.headline)
+                                Text(item.description)
+                            }
+                                .padding(.horizontal)
+                            Spacer()
+                            Text("$\(item.price, specifier: "%.2f")")
+                            
+                        }
+                    }
+                    .onDelete(perform: removeItem)
+                    
+                }
                 Spacer()
             }
             .navigationBarTitle("Cart")
@@ -26,6 +52,10 @@ struct CartView: View {
                     self.screen = 2
             })
         }
+    }
+    
+    func removeItem(at offsets: IndexSet) {
+        cart.items.remove(atOffsets: offsets)
     }
 }
 

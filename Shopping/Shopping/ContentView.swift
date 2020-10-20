@@ -14,7 +14,7 @@ struct ContentView: View {
     
     @ObservedObject var items = ItemsList()
     @ObservedObject var itemsStore = StoreList()
-    @ObservedObject var cart = StoreList()
+    @ObservedObject var cart = Cart()
     
     //@ObservedObject var customerList = Customers()
     //@ObservedObject var administratorList = Administrators()

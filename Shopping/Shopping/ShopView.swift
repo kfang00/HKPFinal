@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct ItemView: View {
+    @EnvironmentObject var cart: Cart
     @EnvironmentObject var itemsStore: StoreList
     var index: Int
     
@@ -30,12 +31,15 @@ struct ItemView: View {
                 Text("Seller: \(self.itemsStore.items[index].seller.username)")
                     .font(.subheadline)
                 Button("Add To Cart") {
-                
+                                 
                 }
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .clipShape(Capsule())
+                .onTapGesture {
+                    self.cart.add(item: self.itemsStore.items[self.index])   
+                }
 
                 Spacer()
                 Text("$\(self.itemsStore.items[index].price, specifier: "%.2f")")
