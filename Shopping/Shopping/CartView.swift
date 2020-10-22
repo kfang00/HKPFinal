@@ -19,6 +19,13 @@ struct CartView: View {
                 Text("Your Items")
                     .font(.title)
                     .bold()
+                Text("Swipe to delete")
+                    .font(.subheadline)
+                if cart.items.count == 0 {
+                    Text("Your Cart Is Empty")
+                        .padding()
+                        .foregroundColor(.secondary)
+                }
                 List{
                     ForEach(cart.items) { item in
                         HStack{

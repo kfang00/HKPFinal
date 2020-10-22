@@ -78,7 +78,7 @@ struct LoginView: View {
                             case .success(let str):
                                 DispatchQueue.main.async {
                                     if str.success != nil {
-                                        self.customer.token = str.success!.token
+                                        self.admin.token = str.success!.token
                                         self.screen = 5
                                     }
                                     if str.error != nil {

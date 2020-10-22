@@ -51,22 +51,23 @@ struct Items: Decodable {
 }
 
 struct Item: Decodable, Identifiable {
-    let id = UUID()
     var category: String
     var description: String
+    var id: String
     var name: String
     var picture: Picture
     var price: Float
     var token: String?
     
     
-    init(token: String, price: Float, description: String, picture: Picture, category: String, name: String) {
+    init(token: String, price: Float, description: String, picture: Picture, category: String, name: String, id: String) {
         self.token = token
         self.price = price
         self.description = description
         self.picture = picture
         self.category = category
         self.name = name
+        self.id = id
         
     }
     
@@ -105,11 +106,11 @@ class HttpAuth: ObservableObject  {
         case badURL, requestFailed, unknown
     }
     
-    func signUp(username: String, password: String, link: String) {
+    func signUp(username: String, password: String, link: String, completion:  @escaping (Result<Message, NetworkError>) -> Void) {
         let parameters = ["username": username, "password": password]
         
         guard let url = URL(string: link) else {
-            print("Invalid URL")
+            completion(.failure(.badURL))
             return
         }
         
@@ -127,12 +128,16 @@ class HttpAuth: ObservableObject  {
             }
             if let data = data {
                 
-                guard let finalData = try? JSONDecoder().decode(Message.self, from: data) else {
+                if let finalData = try? JSONDecoder().decode(Message.self, from: data) {
+                    print(finalData)
+                    completion(.success(finalData))
+                } else {
                     return
                 }
-                    print(finalData)
             }
-            print("Error")
+            else if error != nil {
+                completion(.failure(.requestFailed))
+            }
             return
 
         }.resume()
@@ -284,5 +289,35 @@ class HttpAuth: ObservableObject  {
         }
         task.resume()
         return
+    }
+    
+    func deleteItem(token: String, id: String, link: String) {
+        let parameters = ["token": token, "item_id": id]
+        
+        guard let url = URL(string: link) else {
+            print("Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters) else {
+            return
+        }
+        request.httpBody = httpBody
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        URLSession.shared.dataTask(with: request) {data, response, error in
+            if let response = response {
+                print(response)
+            }
+//            if let data = data {
+//
+//            }
+            print("Error")
+            return
+
+        }.resume()
+
     }
 }

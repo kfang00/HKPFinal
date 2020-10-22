@@ -15,6 +15,12 @@ class Administrator: ObservableObject  {
         }
     }
     
+    @Published var username: String = "default" {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    
 }
 
 

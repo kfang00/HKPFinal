@@ -68,8 +68,10 @@ struct ShopView: View {
                         HStack {
                             Spacer()
                             ItemView(screen: self.$screen, index: index)
-                            Spacer()
+                                .padding(.horizontal, 1)
+                            //Spacer()
                             ItemView(screen: self.$screen, index: index + 1)
+                                .padding(.horizontal, 1)
                             Spacer()
                         }
                             

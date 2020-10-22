@@ -17,29 +17,35 @@ struct ShopAdminView: View {
     var body: some View {
         NavigationView{
             VStack{
-                
-                List(items.items) { item in
-                    HStack{
-                        Image(uiImage: UIImage(data: Data(base64Encoded: item.picture.data)!)!)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 120, height: 105)
-                            .cornerRadius(10)
-                            .overlay(RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.blue, lineWidth: 2))
-                            .shadow(radius: 5)
-                            //.padding(.horizontal)
-                        VStack (alignment: .leading){
-                            Text(item.name)
-                                .font(.headline)
-                            Text(item.description)
+                List{
+                    ForEach(0 ..< items.items.count, id:\.self) { index in
+                        HStack{
+                            Image(uiImage: UIImage(data: Data(base64Encoded: self.items.items[index].picture.data)!)!)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 120, height: 105)
+                                .cornerRadius(10)
+                                .overlay(RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.blue, lineWidth: 2))
+                                .shadow(radius: 5)
+                                //.padding(.horizontal)
+                            VStack (alignment: .leading){
+                                Text(self.items.items[index].name)
+                                    .font(.headline)
+                                Text(self.items.items[index].description)
+                            }
+                                .padding(.horizontal)
+                            Spacer()
+                            Text("$\(self.items.items[index].price, specifier: "%.2f")")
+                            Button(action: {self.removeItem(id: self.items.items[index].id, index: index)}){
+                                Image(systemName: "trash")
+                                    .foregroundColor(.blue)
+                            }
+                            
                         }
-                            .padding(.horizontal)
-                        Spacer()
-                        Text("$\(item.price, specifier: "%.2f")")
                         
                     }
-                    
+                    //.onDelete(perform: removeItem)
                 }
                 
                 Spacer()
@@ -72,6 +78,16 @@ struct ShopAdminView: View {
                 }
             }
         }
+    }
+    
+//    func removeItem(at offsets: IndexSet) {
+//        items.items.remove(atOffsets: offsets)
+//        //let deleted = items.items[offsets.startIndex]
+//    }
+    
+    func removeItem(id: String, index: Int) {
+        items.items.remove(at: index)
+        self.decoding.deleteItem(token: admin.token, id: id, link: "https://hkp-shop.herokuapp.com/vendor/items/delete")
     }
 }
 
