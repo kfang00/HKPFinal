@@ -12,6 +12,7 @@ struct CartView: View {
     @Binding var screen: Int
     @EnvironmentObject var cart: Cart
     @State private var total = Float(0.0)
+    @State private var showingCheckout = false
     
     var body: some View {
         NavigationView {
@@ -55,14 +56,21 @@ struct CartView: View {
                 Spacer()
                 Text("Total: $\(calculateTotal(), specifier: "%.2f")")
                 Button("Checkout") {
-                    
+                    self.showingCheckout = true
                 }
             }
             .navigationBarTitle("Cart")
-            .navigationBarItems(trailing:
+            .navigationBarItems(leading: Button("Logout") {
+                self.screen = 0
+                } , trailing:
                 Button("Back to Shop") {
                     self.screen = 2
             })
+            .alert(isPresented:$showingCheckout) {
+                Alert(title: Text("Are you ready to checkout?"), message: Text("Your order is ") + Text("$\(calculateTotal(), specifier: "%.2f")"), primaryButton: .destructive(Text("Confirm")) {
+                    self.cart.items = []
+                }, secondaryButton: .cancel())
+            }
         }
     }
     

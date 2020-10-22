@@ -13,10 +13,14 @@ struct ItemView: View {
     @EnvironmentObject var cart: Cart
     @EnvironmentObject var itemsStore: StoreList
     var index: Int
+    @State private var showDetailView = false
     
      var body: some View {
         VStack (spacing: 5){
             if index != self.itemsStore.items.count {
+                NavigationLink(destination: DetailView(item: itemsStore.items[index]), isActive: $showDetailView) {
+                    EmptyView()
+                }
                 Image(uiImage: UIImage(data: Data(base64Encoded: self.itemsStore.items[index].picture.data)!)!)
                     .resizable()
                     .scaledToFill()
@@ -25,10 +29,14 @@ struct ItemView: View {
                     .overlay(RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.blue, lineWidth: 2))
                     .shadow(radius: 5)
+                    .onTapGesture {
+                        self.showDetailView = true
+                    }
                     //.padding(.horizontal)
+                
                 Text(self.itemsStore.items[index].name)
                     .font(.headline)
-                Text("Description: \(self.itemsStore.items[index].description)")
+                //Text("Description: \(self.itemsStore.items[index].description)")
                 Text("Seller: \(self.itemsStore.items[index].seller.username)")
                     .font(.subheadline)
                 Button("Add To Cart") {
@@ -59,30 +67,36 @@ struct ShopView: View {
     
     
     var body: some View {
-        NavigationView{
-            VStack{
-                Text("Welcome to Shop.com!")
-                    .font(.title)
-                List{
-                    ForEach(Array(stride(from: 0, to: itemsStore.items.count, by: 2)), id:\.self) { index in
-                        HStack {
-                            Spacer()
-                            ItemView(screen: self.$screen, index: index)
-                                .padding(.horizontal, 1)
-                            //Spacer()
-                            ItemView(screen: self.$screen, index: index + 1)
-                                .padding(.horizontal, 1)
-                            Spacer()
-                        }
+        GeometryReader {geo in
+            NavigationView{
+                VStack{
+                    Text("Welcome to Shop.com!")
+                        .font(.title)
+                    List{
+                        ForEach(Array(stride(from: 0, to: self.itemsStore.items.count, by: 2)), id:\.self) { index in
+                            HStack {
+                                //Spacer()
+                                ItemView(screen: self.$screen, index: index)
+                                    .padding(.horizontal, 1)
+                                    .frame(width: geo.size.width / 2.3)
+                                //Spacer()
+                                ItemView(screen: self.$screen, index: index + 1)
+                                    .padding(.horizontal, 1)
+                                    .frame(width: geo.size.width / 2)
+                                //Spacer()
+                            }
+                                
                             
-                        
+                        }
                     }
                 }
+                .navigationBarTitle("Shop")
+                .navigationBarItems(leading: Button("Logout") {
+                self.screen = 0
+                } , trailing: Button ("Cart") {
+                    self.screen = 4
+                })
             }
-            .navigationBarTitle("Shop")
-            .navigationBarItems(trailing: Button ("Cart") {
-                self.screen = 4
-            })
         }
         .onAppear(perform: loadItems)
     }

@@ -51,7 +51,9 @@ struct ShopAdminView: View {
                 Spacer()
             }
             .navigationBarTitle("Your Items")
-            .navigationBarItems(trailing: Button("Add a new item") {
+            .navigationBarItems(leading: Button("Logout") {
+                self.screen = 0
+            } , trailing: Button("Add a new item") {
                 self.screen = 3
             })
         }
